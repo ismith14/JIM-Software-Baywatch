@@ -1,0 +1,56 @@
+drop table if exists attractions;
+drop table if exists datalogs;
+drop table if exists locations;
+drop table if exists bodies_of_water;
+drop table if exists subscriptions;
+drop table if exists users;
+
+create table users
+(username varchar(25) not null,
+ password varchar(25) not null,
+ primary key (username, password)
+);
+create table subscriptions
+(username varchar(25) not null,
+ subscription_type varchar(15) not null,
+ start_date date,
+ end_date date,
+ primary key (username, subscription_type, start_date),
+ foreign key (username) references users(username)
+);
+create table bodies_of_water
+(waterName varchar(30) not null,
+ region varchar(20) not null,
+ water_type varchar(15),
+ primary key (waterName)
+);
+create table locations
+(locationName varchar(30) not null,
+ waterName varchar(30) not null,
+ location_type varchar(15),
+ primary key (locationName, waterName),
+ foreign key (waterName) references bodies_of_water(watername)
+);
+create table datalogs
+(locationName varchar(30) not null,
+ animalLife varchar(50),
+ runoff varchar(50),
+ deadZones varchar(50),
+ chemicalPollution varchar(50),
+ climateChange varchar(50),
+ invasiveSpecies varchar(50),
+ airPollution varchar(50),
+ wastewater varchar(50),
+ logDate date not null,
+ primary key (locationName, logDate),
+ foreign key (locationName) references locations(locationName)
+);
+create table attractions
+(locationName varchar(30) not null,
+ attractionName varchar(30) not null,
+ attractionPrice decimal(10,2),
+ attractionType varchar(15),
+ attractionAddress varchar(25),
+ primary key (locationName, attractionName),
+ foreign key (locationName) references locations(locationName)
+);
