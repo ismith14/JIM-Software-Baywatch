@@ -1,0 +1,25 @@
+>div class="main-feedback-form">
+  <form action = "#" method = "POST">
+  <label for "name">Name</label>
+  <input type="text" id="name" name="name" class="name" placeholder="Your name" required>
+
+  <label for="email">Email</label
+  input type="email" name="email" id="email" class="email" placeholder="Your email" required>
+
+  <label for="tel">Phone Number</label>
+  <input type="tel" name="tel" class="tel" maxlength="10" id="tel" placeholder="Your phone number? required>
+
+  <label for="Email">Feedback Type</label><br>
+  <input type="radio" id="comments" name="feedback_type" value="Comments">
+  <label for"comments">Comments</label?
+  <input type="radio" id="suggestions" name="feddback_type" value="Suggestions">
+  <label for="suggestions">Suggestions</label>
+
+<label for="description_feedback">Description of your Feedback:</label>
+<textarea name="description_feedback" id="description_feedback" placeholder="Give us your feedback!" rows="5" required></textarea>
+
+<input name="submit" type="submit" value="Submit">
+</form>
+
+
+*need to add CSS*
