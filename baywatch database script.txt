@@ -1,5 +1,5 @@
-create database if not exists delmarva_food_bank;
-use database baywatchDB;
+create database if not exists baywatchDB;
+use baywatchDB;
 
 drop table if exists attractions;
 drop table if exists datalogs;
@@ -31,8 +31,8 @@ create table locations
 (locationName varchar(30) not null,
  waterName varchar(30) not null,
  location_type varchar(15),
- latitude decimal(3, 6) not null,
- longitude decimal(3,6) not null,
+ latitude decimal(10, 6) not null,
+ longitude decimal(10,6) not null,
  primary key (locationName, waterName),
  foreign key (waterName) references bodies_of_water(watername)
 );
