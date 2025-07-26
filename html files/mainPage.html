@@ -20,8 +20,19 @@
         <li><a href="feedback.html">Feedback Page</a></li>
     </ul>
 
+    </nav>
     <main>
         <h3>This is the main page</h3>
+        <select name="Locations" id="locationList">
+
+        </select>
+
+     <button type="button" onclick="getLocationData()">Select a location</button>
+     
+     <ul id="locationData">
+
+     </ul>
+
         <p>Functionality go here</p>
     </main>
        
@@ -49,6 +60,78 @@
         }
     </style>
 
-   </nav>
+   <script>
+        fetch('/main')
+        .then(response => response.json())
+        .then(data => {
+            var locationSelect = document.getElementById('locationList')
+            data.forEach(element => {
+                var newOption = document.createElement('option')
+                newOption.value = element.locationName
+                newOption.textContent = element.locationName
+                locationSelect.appendChild(newOption)
+            })
+        })
+        function getLocationData(){
+            var selectedLocation = document.getElementById('locationList')
+            var locationDataList = document.getElementById('locationData')
+            var value = selectedLocation.value
+            fetch(`/locationData/${value}`)
+            .then(response => response.json())
+            .then(data => {
+
+                locationDataList.innerHTML = ""
+
+                var node = document.createElement('li')
+                var text = document.createTextNode('Animal Life: ' +data[0].animalLife)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Runoff: ' + data[0].runoff)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('DeadZones: ' + data[0].deadZones)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Chemical Pollution: ' +data[0].chemicalPollution)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Climate Change: '+data[0].climateChange)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Invasive Species: ' + data[0].invasiveSpecies)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Air Pollution: ' +data[0].airPollution)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Wastewater: ' +data[0].wastewater)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+            })
+        }
+   </script>
 </body>
 </html>
