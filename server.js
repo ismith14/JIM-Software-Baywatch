@@ -20,8 +20,10 @@ con.connect((err) => {
     console.log("connected")
 })
 
+app.use(express.static('public'))
+
 app.get('/', (req, res) => {
-    res.sendFile(`${publicpath}/html files/mainPage.html`)
+    res.sendFile(`${publicpath}/public/mainPage.html`)
 })
 
 app.get('/main', (req, res) => {
