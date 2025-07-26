@@ -1,5 +1,5 @@
-create database if not exists baywatchDB;
-use baywatchDB;
+create database if not exists baywatchdb;
+use baywatchdb;
 
 drop table if exists attractions;
 drop table if exists datalogs;
