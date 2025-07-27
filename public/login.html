@@ -30,7 +30,8 @@
 <head>
 
 <body>
-    <form action=""></form>
+    <p id="errorMsg"></p>
+    <form class="form">
   <label for = "first">
           Username:</label>
 
@@ -43,7 +44,7 @@ required>
 <label for="password">
   Password:
 </label>
-<input type="passowrd" id="password" 
+<input type="password" id="password" 
 name="password" 
     placeholder="enter your password"
 required>
@@ -59,5 +60,37 @@ Submit
     </main>
 
    </nav>
+
+   <script>
+        const form = document.querySelector('.form')
+
+        form.addEventListener('submit', event => {
+            event.preventDefault()
+
+            const formData = new FormData(form)
+            const data = Object.fromEntries(formData)
+
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => response.json())
+            .then(data => {
+                if(data[0].message == "Invalid Username"){
+                    document.getElementById('errorMsg').innerHTML = data[0].message
+                }else if(data[0].message == "Invalid Password"){
+                    document.getElementById('errorMsg').innerHTML = data[0].message
+                }else{
+                    console.log("Login successful")
+                    window.location.href = "/"
+                }
+            })
+            .catch(error => console.log(error))
+        })
+        
+   </script>
+
 </body>
 </html>
