@@ -4,13 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .title{
+            text-align: center;
+            padding-top: 15px;
+            padding-bottom: 10px;
+        }
+        #logoLanding{
+            width: 40%;
+            height: 30%;
+            display: block;
+            margin: auto;
+        }
+        .loginRedirect{
+            text-align: center;
+        }
+        #directLogin{
+            padding: 10px;
+            text-align: center;
+            display: inline-block;
+            font-size: 14px;
+            background-color: aquamarine;
+        }
+        .baywatchDesc{
+            font-size: 18px;
+            padding: 15px;
+        }
+    </style>
 </head>
 <body>
     <main>
-        <hh1>Welcome to Baywatch: An incredible way to look up geographical information</hh1>
+        <div class="title">
+            <h1 id="baywatchInto">Welcome to Baywatch</h1>
+            <h2>Where you have eyes on land, seas, and skies</h2>
+        </div>
+        <img id="logoLanding" src="\baywatch.png" alt="baywatch logo">
     </main>
-    <h3>Please login to access Baywatch</h3>
-    <button type="button" onclick="directToLogin()">Go to Login</button>
+    <div class="baywatchDesc">
+        <p>Baywatch is an application that allows users to use their geological location
+                and information to display information about locations within bodies of water near you.
+                This information provided by Baywatch includes
+        </p>
+        <ol>
+            <li>Enviromental</li>
+            <li>Wildlife such as fish and other marine life</li>
+            <li>Weather</li>
+            <li>And much more available</li>
+        </ol>
+        <p>Even if you don't want to give your location to us, you can simply chose a location from
+            a list of all currently supported locations within our application.
+            Thank you for visiting our site and enjoy learning about a location near you.
+        </p>
+    </div>
+    <div class="loginRedirect">
+        <h3 id="loginDesc">Please login to access Baywatch</h3>
+        <button id="directLogin" type="button" onclick="directToLogin()">Go to Login</button>
+    </div>
 </body>
 <script>
     function directToLogin(){
