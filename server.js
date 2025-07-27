@@ -27,7 +27,7 @@ app.use(express.static('public'))
 app.use(express.json())
 
 app.get('/', (req, res) => {
-    res.sendFile(`${publicpath}/public/mainPage.html`)
+    res.sendFile(`${publicpath}/public/frontPage.html`)
 })
 
 app.get('/main', (req, res) => {

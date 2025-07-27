@@ -55,6 +55,9 @@ Submit
 </button>
 
 </form>
+
+<p>Don't have an account? Create one here</p>
+<button type="button" onclick="directToAccountCreation()">Create Account</button>
 </body>
 
 </html></p>
@@ -85,12 +88,14 @@ Submit
                     document.getElementById('errorMsg').innerHTML = data[0].message
                 }else{
                     console.log("Login successful")
-                    window.location.href = "/"
+                    window.location.href = "/mainPage.html"
                 }
             })
             .catch(error => console.log(error))
         })
-        
+        function directToAccountCreation(){
+            window.location.href = '/createAccount.html'
+        }
    </script>
 
 </body>
