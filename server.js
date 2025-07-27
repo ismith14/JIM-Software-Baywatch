@@ -70,11 +70,28 @@ app.post('/api/login', (req, res) =>{
                 }else{
                     console.log("Info valid")
                     user = req.body.first
-                    res.send([{message: "Yes"}])
+                    res.send([{message: "Successful"}])
                 }
             })
         }
     })
+})
+
+app.post('/api/createUser', (req, res) =>{
+    var sql = "Insert into users values ( ? , ? );"
+        try{
+        con.query(sql, [req.body.username, req.body.password], (err, result) =>{
+            if(err){ 
+                res.send([{message: 'Duplicate Entry'}])
+            }
+            else{
+            console.log("Record Inserted")
+            res.send([{message: "Successful"}])
+            }
+        })
+    }catch(err){
+        res.send({message: 'Duplicate Entry'})
+    }
 })
 
 app.listen(3000, () => {
