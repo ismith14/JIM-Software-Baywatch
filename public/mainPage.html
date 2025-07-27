@@ -10,17 +10,16 @@
 <body>
    <h1>Baywatch</h1>
 
+   <button type="button" onclick="logout()">Logout</button>
    <nav class="navbar">
     <ul>
         <li><a href="mainPage.html">Main Page</a></li>
         <li><a href="sources.html">Sources</a></li>
-        <li><a href="login.html">Login</a></li>
         <li><a href="subscription.html">Subscription Page</a></li>
         <li><a href="additional_info.html">Additional Information</a></li>
         <li><a href="feedback.html">Feedback Page</a></li>
-        <li><a href="createAccount.html">Create Account</a></li>
     </ul>
-
+    
     </nav>
     <main>
         <p id="username"></p>
@@ -133,6 +132,9 @@
                 locationDataList.appendChild(node)
 
             })
+        }
+        function logout(){
+            window.location.href = '/'
         }
    </script>
 </body>

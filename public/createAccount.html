@@ -11,15 +11,6 @@
     <h1>Baywatch</h1>
 
     <nav class="navbar">
-    <ul>
-        <li><a href="mainPage.html">Main Page</a></li>
-        <li><a href="sources.html">Sources</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="subscription.html">Subscription Page</a></li>
-        <li><a href="additional_info.html">Additional Information</a></li>
-        <li><a href="feedback.html">Feedback Page</a></li>
-        <li><a href="createAccount.html">Create Account</a></li>
-    </ul>
     </nav>
     
     <p id="errorMsg"></p>
@@ -31,6 +22,8 @@
         <input type="password" id="password" name="password" placeholder="Password" required><br><br>
         <input type="submit" value="Submit">
     </form>
+    <label>Already have an account?</label>
+    <button type="button" onclick="redirectToLogin()">Back to login</button>
 </body>
 <script>
     const form = document.querySelector('.createForm')
@@ -58,5 +51,8 @@
             })
             .catch(error => console.log(error))
         })
+        function redirectToLogin(){
+            window.location.href = '/login.html'
+        }
 </script>
 </html>
