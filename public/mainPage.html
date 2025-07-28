@@ -10,7 +10,7 @@
 <body>
    <h1>Baywatch</h1>
 
-   <button type="button" onclick="logout()">Logout</button>
+   <button id="loginButton" type="button" onclick="logout()">Logout</button>
    <button type="button" onclick="initMap()">GPS</button>
    <nav class="navbar">
     <ul>
@@ -76,6 +76,13 @@
                 newOption.textContent = element.locationName
                 locationSelect.appendChild(newOption)
             })
+        })
+        fetch('/api/getUser')
+        .then(response => response.json())
+        .then(data => {
+            if(data[0].message != ''){
+                document.getElementById('loginButton')
+            }
         })
         function getLocationData(){
             var selectedLocation = document.getElementById('locationList')

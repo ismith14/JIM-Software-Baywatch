@@ -94,6 +94,15 @@ app.post('/api/createUser', (req, res) =>{
     }
 })
 
+app.get('/api/getUser', (req, res) => {
+    if(user == ''){
+        res.send({message: 'not logged in'})
+    }else{
+        res.send({message: user})
+    }
+})
+
+
 app.listen(3000, () => {
     console.log('server listen on port 3000')
 })
