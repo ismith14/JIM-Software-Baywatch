@@ -6,6 +6,30 @@
     <title>Baywatch</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="icon" type="image/png" href="baywatch.png">
+    <style>
+        .loginForm{
+            text-align: center;
+            padding-top: 50px;
+        }
+        #first{
+            padding: 5px;
+        }
+        #password{
+            padding: 5px;
+        }
+        #passwordLabel{
+            padding-left: 10px;
+        }
+        #loginButton{
+            padding: 5px;
+        }
+        #createAccountButton{
+            padding: 5px;
+        }
+        #loginPage{
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
    <h1>Baywatch</h1>
@@ -22,7 +46,7 @@
     </nav>
    <nav class="navbar">
     <main>
-        <h3>This is the login page</h3>
+        <h3 id="loginPage">Login page</h3>
         <p><!DOCTYPE html>
 <html lang="en">
 
@@ -32,32 +56,34 @@
 
 <body>
     <p id="errorMsg"></p>
-    <form class="form">
-  <label for = "first">
-          Username:</label>
+    <div class="loginForm">
+            <form class="form">
+        <label for = "first">
+                Username:</label>
 
-          
-  <input type="text" id="first"
-name="first" 
-    placeholder="enter your Username"
-required>
+                
+        <input type="text" id="first"
+        name="first" 
+            placeholder="enter your Username"
+        required>
 
-<label for="password">
-  Password:
-</label>
-<input type="password" id="password" 
-name="password" 
-    placeholder="enter your password"
-required>
+        <label id="passwordLabel" for="password">
+        Password:
+        </label>
+        <input type="password" id="password" 
+        name="password" 
+            placeholder="enter your password"
+        required>
 
-<button type="submit">
-Submit
-</button>
+        <button id="loginButton" type="submit">
+        Submit
+        </button>
 
-</form>
+        </form>
 
-<p>Don't have an account? Create one here</p>
-<button type="button" onclick="directToAccountCreation()">Create Account</button>
+        <p>Don't have an account? Create one here</p>
+        <button id="createAccountButton" type="button" onclick="directToAccountCreation()">Create Account</button>
+</div>
 </body>
 
 </html></p>
@@ -66,6 +92,11 @@ Submit
    </nav>
 
    <script>
+
+    //event listener acts when user clicks the submit button on the form
+    //will take form data and use fetch api to send to server
+    //if username or password is invalid, text will appear on screen showing error
+    //redirects to mainpage if successful
         const form = document.querySelector('.form')
 
         form.addEventListener('submit', event => {
@@ -93,6 +124,7 @@ Submit
             })
             .catch(error => console.log(error))
         })
+        //sends user to account creation page upon clicking the create account button
         function directToAccountCreation(){
             window.location.href = '/createAccount.html'
         }

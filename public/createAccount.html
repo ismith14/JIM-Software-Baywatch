@@ -6,6 +6,31 @@
     <title>Baywatch</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="icon" type="image/png" href="baywatch.png">
+    <style>
+        .createForm{
+            padding: 50px;
+            text-align: center;
+        }
+        .createText{
+            padding: 5px;
+        }
+        .createLabels{
+            padding: 5px;
+        }
+        #submitAccountButton{
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        .redirectLogin{
+            padding-top: 15px;
+            text-align: center;
+        }
+        #returnToLoginButton{
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>Baywatch</h1>
@@ -25,16 +50,22 @@
     <p id="errorMsg"></p>
 
     <form class="createForm">
-        <label for="username">Username: </label><br>
-        <input type="text" id="username" name="username" placeholder="Username" required><br>
-        <label for="password">Password: </label><br>
-        <input type="password" id="password" name="password" placeholder="Password" required><br><br>
-        <input type="submit" value="Submit">
+        <label class="createLabels" for="username">Username: </label><br><br>
+        <input class="createText" type="text" id="username" name="username" placeholder="Username" required><br><br>
+        <label class="createLabels" for="password">Password: </label><br><br>
+        <input class="createText" type="password" id="password" name="password" placeholder="Password" required><br><br>
+        <input id="submitAccountButton" type="submit" value="Submit">
     </form>
-    <label>Already have an account?</label>
-    <button type="button" onclick="redirectToLogin()">Back to login</button>
+    <div class="redirectLogin">
+        <label>Already have an account?</label>
+        <button id="returnToLoginButton" type="button" onclick="redirectToLogin()">Back to login</button>
+    </div>
 </body>
 <script>
+
+    //event listener waits for user to click submit button to create an account
+    //passes form data to server as a post request and tries to insert data
+    //if a value is duplicate to another entry in database will return error to user as text
     const form = document.querySelector('.createForm')
 
     form.addEventListener('submit', event =>{

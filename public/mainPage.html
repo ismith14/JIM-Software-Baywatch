@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baywatch</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="icon" type="image/png" href="baywatch.png">
+    <link rel="icon" type="image/png" href="/baywatch.png">
 </head>
 <body onload="getUser()">
    <h1>Baywatch</h1>
@@ -25,17 +25,18 @@
     </nav>
     <main>
         <p id="username"></p>
-        <h3>This is the main page</h3>
+        <h3>Main Page. Select a location to view information about a location.</h3>
         <select name="Locations" id="locationList">
 
         </select>
 
      <button type="button" onclick="getLocationData()">Select a location</button>
+     <button id="geoButton" type="button" onclick="getGeolocation()">GPS Location</button>
+     <p id="geoCoords"></p>
      
      <ul id="locationData">
 
      </ul>
-        <p>Functionality go here</p>
     </main>
        
     <div class="google-map">
@@ -50,7 +51,9 @@
     </div>
 
    <script>
-        fetch('/main')
+        //runs when loading page
+        //fills dropdown menu of all locations in the system
+        fetch('/api/main')
         .then(response => response.json())
         .then(data => {
             var locationSelect = document.getElementById('locationList')
@@ -61,6 +64,7 @@
                 locationSelect.appendChild(newOption)
             })
         })
+        //gets the currently logged in user
         function getUser(){
             fetch('/api/getUser')
             .then(response => response.json())
@@ -75,18 +79,31 @@
                     }
             })
         }
+        //once user selects a location and clicking the select a location button function will return all data on that location in the database from server
         function getLocationData(){
             var selectedLocation = document.getElementById('locationList')
             var locationDataList = document.getElementById('locationData')
             var value = selectedLocation.value
-            fetch(`/locationData/${value}`)
+            fetch(`/api/locationData/${value}`)
             .then(response => response.json())
             .then(data => {
 
                 locationDataList.innerHTML = ""
 
                 var node = document.createElement('li')
-                var text = document.createTextNode('Animal Life: ' +data[0].animalLife)
+                var text = document.createTextNode('Latitude: ' +data[0].latitude)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Longitude: ' +data[0].longitude)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Animal Life: ' +data[0].animalLife)
 
                 node.appendChild(text)
                 locationDataList.appendChild(node)
@@ -133,8 +150,15 @@
                 node.appendChild(text)
                 locationDataList.appendChild(node)
 
+                node = document.createElement('li')
+                text = document.createTextNode('Water Tides: ' +data[0].watertides)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
             })
         }
+        //logout user and redirects them to frontpage
         function logout(){
             fetch('/api/userLogout')
             .then(response => response.json())
@@ -142,9 +166,23 @@
                 window.location.href = '/frontPage.html'
             })
         }
+        //redirects user to login page
         function login(){
             window.location.href = '/login.html'
         }
+        //user clicks on Gps location button and returns the coordinates of their position
+        function getGeolocation(){
+            const successCallback = (position) => {
+                document.getElementById('geoCoords').innerHTML = 'Latitude: ' + position.coords.latitude + ' longitude: ' + position.coords.longitude
+            }
+            const errorCallback = (error) => {
+                document.getElementById('geoCoords').innerHTML = "Unable to get position"
+                console.log(error)
+            }
+
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        }
+
    </script>
 </body>
 </html>

@@ -13,8 +13,8 @@
             padding-bottom: 10px;
         }
         #logoLanding{
-            width: 40%;
-            height: 30%;
+            width: 25%;
+            height: 20%;
             display: block;
             margin: auto;
         }
@@ -37,6 +37,9 @@
 </head>
 <body onload="getUser()">
     <main>
+        <p id="username"></p>
+        <button id="loginButton" type="button" onclick="login()">Login</button>
+        <button id="logoutButton" type="button" onclick="logout()">Logout</button>
         <nav class="navbar">
             <ul>
                 <li><a href="frontPage.html">Front Page</a></li>
@@ -52,7 +55,7 @@
             <h1 id="baywatchInto">Welcome to Baywatch</h1>
             <h2>Where you have eyes on land, seas, and skies</h2>
         </div>
-        <img id="logoLanding" src="\public\baywatch.png" alt="baywatch logo">
+        <img id="logoLanding" src="\baywatch.png" alt="baywatch logo">
     </main>
     <div class="baywatchDesc">
         <p>Baywatch is an application that allows users to use their geological location
@@ -77,21 +80,37 @@
     </div>
 </body>
 <script>
+    //go to login button redirects to login page
     function directToLogin(){
         window.location.href = '/login.html'
     }
     function getUser(){
-            fetch('/api/getUser')
+        fetch('/api/getUser')
+        .then(response => response.json())
+        .then(data => {
+                if(data[0].message != ''){
+                    document.getElementById('username').innerHTML = data[0].message
+                    document.getElementById('loginButton').style.visibility = 'hidden'
+                    document.getElementById('userLoggedIn').innerText = "You are signed in"
+                    document.getElementById('directLogin').style.visibility = 'hidden'
+                }else{
+                    document.getElementById('logoutButton').style.visibility = 'hidden'
+                    document.getElementById('loginButton').style.visibility = 'visible'
+                    document.getElementById('username').innerHTML = ''
+                    document.getElementById('userLoggedIn').innerHTML = ''
+                    document.getElementById('directLogin').style.visibility = 'visible'
+                }
+        })
+    }
+    function logout(){
+            fetch('/api/userLogout')
             .then(response => response.json())
             .then(data => {
-                    if(data[0].message != ''){
-                        document.getElementById('userLoggedIn').innerText = "You are signed in"
-                        document.getElementById('directLogin').style.visibility = 'hidden'
-                    }else{
-                        document.getElementById('userLoggedIn').innerHTML = ''
-                        document.getElementById('directLogin').style.visibility = 'visible'
-                    }
+                window.location.href = '/frontPage.html'
             })
         }
+    function login(){
+        window.location.href = '/login.html'
+    }
 </script>
 </html>
