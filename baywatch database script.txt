@@ -65,9 +65,9 @@ insert into bodies_of_water values
 ('Chesapeake Bay', 'Mid-Alantic', 'Bay');
 
 insert into locations values
-('James River', 'Chesapeake Bay', 'River', 37.474, -79.4633),
-('Susquehanna River', 'Chesapeake Bay', 'River', 42.4202, -74.5510),
-('Nanticoke River', 'Chesapeake Bay', 'River', 38.5255, -75.3336);
+('James River', 'Chesapeake Bay', 'River', 37.474, 79.4633),
+('Susquehanna River', 'Chesapeake Bay', 'River', 42.4202, 74.5510),
+('Nanticoke River', 'Chesapeake Bay', 'River', 38.5255, 75.3336);
 
 insert into datalogs values
 ('James River', 'Brook Trout, Raptors, Eastern Oysters', '170,077 pounds of toxic chemicals. Risks from 1100 toxic storage sites, 5 billion gallons of coal ash, and millions of crude oil transported.', 'low amount', 'Companies dumping toxic chemicals into river ex. Honeywell Inc.', 'No Information available at this time', 'Tree of Heaven, Oriental Bittersweet, Autumn Olive, Chinese Privet', 'Presence of polychlorinated biphenyls(PCBs). Stormwater and old industrial sites contribute to air pollution.', 'Estimate of 1 million gallons of untreated sewage released on July 11th', 'High Tide: 3:07am-3:34pm,
