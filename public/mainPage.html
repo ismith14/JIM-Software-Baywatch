@@ -7,33 +7,33 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="icon" type="image/png" href="baywatch.png">
 </head>
-<body>
+<body onload="getUser()">
    <h1>Baywatch</h1>
-
+    <p id="username"></p>
+    <button id="loginButton" type="button" onclick="login()">Login</button>
+    <button id="logoutButton" type="button" onclick="logout()">Logout</button>
    <button type="button" onclick="logout()">Logout</button>
    <nav class="navbar">
-        <ul>
-            <li><a href="frontPage.html">Front Page</a></li>
-            <li><a href="mainPage.html">Main Page</a></li>
-            <li><a href="login.html">Login</a></li>
-            <li><a href="createAccount.html">Create Account</a></li>
-            <li><a href="sources.html">Sources</a></li>
-            <li><a href="subscription.html">Subscription Page</a></li>
-            <li><a href="additional_info.html">Additional Information</a></li>
-            <li><a href="feedback.html">Feedback Page</a></li>
-        </ul>
+    <ul>
+        <li><a href="frontPage.html">Front Page</a></li>
+        <li><a href="mainPage.html">Main Page</a></li>
+        <li><a href="sources.html">Sources</a></li>
+        <li><a href="subscription.html">Subscription Page</a></li>
+        <li><a href="additional_info.html">Additional Information</a></li>
+        <li><a href="feedback.html">Feedback Page</a></li>
+    </ul>
     </nav>
 
     <main>
         <p id="username"></p>
-        <h3>This is the main page</h3>
+        <h3>Main Page. Select a location to view information about a location.</h3>
         <select name="Locations" id="locationList">
         </select>
 
         <button type="button" onclick="getLocationData()">Select a location</button>
-        
+        <button id="geoButton" type="button" onclick="getGeolocation()">GPS Location</button>
+        <p id="geoCoords"></p>
         <ul id="locationData">
-
         </ul>
 
         <p>Functionality go here</p>
@@ -46,15 +46,22 @@
         style="height: 650px"
     ></gmp-map>
 
-    <div id="map" style="height: 450px; width: 100%; margin-top: 20px;"></div>
+    <div class="google-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1604478.2164325353!2d-76.0978064!3d38.23898895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89ba41ae6aa9019b%3A0x8961db5a6cf17a52!2sChesapeake%20Bay!5e0!3m2!1sen!2sus!4v1753065147395!5m2!1sen!2sus" 
+          width="800" 
+          height="600" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
 
-    <script src = "geolocation.js"></script>
-    <script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDW6ceKFbiKTwBicjVJcTPeloYefjkc1KY&loading=async&libraries=maps,marker&v=beta"
-        defer>
-    </script>
-    <script>
-        fetch('/main')
+   <script>
+        //runs when loading page
+        //fills dropdown menu of all locations in the system
+
+        fetch('/api/main')
         .then(response => response.json())
         .then(data => {
             var locationSelect = document.getElementById('locationList')
@@ -65,18 +72,48 @@
                 locationSelect.appendChild(newOption)
             })
         })
+        //gets the currently logged in user
+
+
+
+        function getUser(){
+            fetch('/api/getUser')
+            .then(response => response.json())
+            .then(data => {
+                    if(data[0].message != ''){
+                        document.getElementById('username').innerHTML = data[0].message
+                        document.getElementById('loginButton').style.visibility = 'hidden'
+                    }else{
+                        document.getElementById('logoutButton').style.visibility = 'hidden'
+                        document.getElementById('loginButton').style.visibility = 'visible'
+                        document.getElementById('username').innerHTML = ''
+                    }
+            })
+        }
         function getLocationData(){
             var selectedLocation = document.getElementById('locationList')
             var locationDataList = document.getElementById('locationData')
             var value = selectedLocation.value
-            fetch(`/locationData/${value}`)
+            fetch(`/api/locationData/${value}`)
             .then(response => response.json())
             .then(data => {
 
                 locationDataList.innerHTML = ""
 
                 var node = document.createElement('li')
-                var text = document.createTextNode('Animal Life: ' +data[0].animalLife)
+                var text = document.createTextNode('Latitude: ' +data[0].latitude)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Longitude: ' +data[0].longitude)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Animal Life: ' +data[0].animalLife)
 
                 node.appendChild(text)
                 locationDataList.appendChild(node)
@@ -106,6 +143,12 @@
                 locationDataList.appendChild(node)
 
                 node = document.createElement('li')
+                text = document.createTextNode('Water Tides: ' +data[0].watertides)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
                 text = document.createTextNode('Invasive Species: ' + data[0].invasiveSpecies)
 
                 node.appendChild(text)
@@ -125,8 +168,27 @@
 
             })
         }
+        //logout user and redirects them to frontpag
         function logout(){
-            window.location.href = '/'
+            fetch('/api/userLogout')
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = '/frontPage.html'
+            })
+        }
+        function login(){
+            window.location.href = '/login.html'
+        }
+
+        function getGeolocation(){
+            const successCallback = (position) => {
+                document.getElementById('geoCoords').innerHTML = 'Latitude: ' + position.coords.latitude + ' longitude: ' + position.coords.longitude
+            }
+            const errorCallback = (error) => {
+                document.getElementById('geoCoords').innerHTML = "Unable to get position"
+                console.log(error)
+            }
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
         }
     </script>
 </body>
