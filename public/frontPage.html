@@ -35,7 +35,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="getUser()">
     <main>
         <nav class="navbar">
             <ul>
@@ -73,11 +73,25 @@
     <div class="loginRedirect">
         <h3 id="loginDesc">Please login to access Baywatch</h3>
         <button id="directLogin" type="button" onclick="directToLogin()">Go to Login</button>
+        <p id="userLoggedIn"></p>
     </div>
 </body>
 <script>
     function directToLogin(){
         window.location.href = '/login.html'
     }
+    function getUser(){
+            fetch('/api/getUser')
+            .then(response => response.json())
+            .then(data => {
+                    if(data[0].message != ''){
+                        document.getElementById('userLoggedIn').innerText = "You are signed in"
+                        document.getElementById('directLogin').style.visibility = 'hidden'
+                    }else{
+                        document.getElementById('userLoggedIn').innerHTML = ''
+                        document.getElementById('directLogin').style.visibility = 'visible'
+                    }
+            })
+        }
 </script>
 </html>
