@@ -38,14 +38,15 @@ create table locations
 );
 create table datalogs
 (locationName varchar(30) not null,
- animalLife varchar(50),
- runoff varchar(50),
- deadZones varchar(50),
- chemicalPollution varchar(50),
- climateChange varchar(50),
- invasiveSpecies varchar(50),
- airPollution varchar(50),
- wastewater varchar(50),
+ animalLife varchar(200),
+ runoff varchar(200),
+ deadZones varchar(200),
+ chemicalPollution varchar(200),
+ climateChange varchar(200),
+ invasiveSpecies varchar(200),
+ airPollution varchar(200),
+ wastewater varchar(200),
+ watertides varchar(200),
  logDate date not null,
  primary key (locationName, logDate),
  foreign key (locationName) references locations(locationName)
@@ -59,3 +60,25 @@ create table attractions
  primary key (locationName, attractionName),
  foreign key (locationName) references locations(locationName)
 );
+
+insert into bodies_of_water values
+('Chesapeake Bay', 'Mid-Alantic', 'Bay');
+
+insert into locations values
+('James River', 'Chesapeake Bay', 'River', 37.474, -79.4633),
+('Susquehanna River', 'Chesapeake Bay', 'River', 42.4202, -74.5510),
+('Nanticoke River', 'Chesapeake Bay', 'River', 38.5255, -75.3336);
+
+insert into datalogs values
+('James River', 'Brook Trout, Raptors, Eastern Oysters', '170,077 pounds of toxic chemicals. Risks from 1100 toxic storage sites, 5 billion gallons of coal ash, and millions of crude oil transported.', 'low amount', 'Companies dumping toxic chemicals into river ex. Honeywell Inc.', 'No Information available at this time', 'Tree of Heaven, Oriental Bittersweet, Autumn Olive, Chinese Privet', 'Presence of polychlorinated biphenyls(PCBs). Stormwater and old industrial sites contribute to air pollution.', 'Estimate of 1 million gallons of untreated sewage released on July 11th', 'High Tide: 3:07am-3:34pm,
+Low Tide: 9:56am-10:17pm ', '2025-07-18'),
+('Susquehanna River', 'Yellow Lampmussels, River Mussels, Eastern Oysters, Green Frogs, Eastern Cottontails', 'High levels of E.coli found at multiple sites due to sewage and stormwater runoff. In case of heavy rain, increased chance of raw sewage being released into river.', 'Some dead zones at the exit of river into Chesapeake Bay', 'Chemicals from sewage and stormwater runoff.', 'Increased flooding due to climate change due to the greenhouse effect with an estimated 10-20% increase in precipitation. Avoid floodplains during rain.', 'Common Carp, Red-eared Slider', 'No Information available at this time', 'Untreated sewage due to rainfall overwhelming sewage systems.', 'High Tide: 12:52am-12:55pm, 
+Low Tide: 7:13am-7:51pm', '2025-07-18'),
+('Nanticoke River', 'Striped bass, Rockfish, Catfish, Cottontail Rabbits, Bobwhite Quail', 'Excessive nutrients due to agricultural runoff', 'Low amount', 'Total Nitrogen increased in Lower Nanticoke from 2020. Phosphorus levels in both parts of the river say the say earning an F grade.', 'No Information available at this time', 'Blue Catfish, Northern Snakehead Fish. Join events to help catch some of these species', 'No Information available at this time', 'No Information available at this time', 'High Tide: 5:10am-5:37pm, Low Tide: 11:55am ', '2025-07-18');
+
+insert into users values
+('James12', 'Password12');
+
+
+
+
