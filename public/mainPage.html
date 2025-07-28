@@ -25,14 +25,14 @@
 
     <main>
         <p id="username"></p>
-        <h3>This is the main page</h3>
+        <h3>Main Page. Select a location to view information about a location.</h3>
         <select name="Locations" id="locationList">
         </select>
 
         <button type="button" onclick="getLocationData()">Select a location</button>
-        
+        <button id="geoButton" type="button" onclick="getGeolocation()">GPS Location</button>
+        <p id="geoCoords"></p>
         <ul id="locationData">
-
         </ul>
 
         <br>
@@ -188,7 +188,6 @@
                 locationSelect.appendChild(newOption)
             })
         })
-
         function getLocationData(){
             var selectedLocation = document.getElementById('locationList')
             var locationDataList = document.getElementById('locationData')
@@ -231,6 +230,12 @@
 
                 node = document.createElement('li')
                 text = document.createTextNode('Climate Change: '+data[0].climateChange)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Water Tides: ' +data[0].watertides)
 
                 node.appendChild(text)
                 locationDataList.appendChild(node)
@@ -279,6 +284,7 @@
                     }
             })
         }
+        //logout user and redirects them to frontpag
         function logout(){
             fetch('/api/userLogout')
             .then(response => response.json())
