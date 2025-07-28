@@ -37,7 +37,6 @@
 
         <br>
         <button id="createMap" type="button" onclick="initMap()">Get Location</button>
-        <button id="geoButton" type="button" onclick="getGeolocation()">GPS Location</button>
         <p id="lat"></p>
         <p id="lon"></p>
     </main>
@@ -61,8 +60,7 @@
     <script>
         function getGeolocation(){
             const successCallback = (position) => {
-                document.getElementById('lat').innerHTML = position.coords.latitude
-                var closest = -1;
+            var closest = -1;
             var finalLat, finalLon
             var uLat = position.coords.latitude
             var uLon = position.coords.longitude
@@ -73,7 +71,6 @@
                     var dist
                     var locLat = (element.latitude*1)
                     var locLon = (element.longitude*1)
-                    console.log(locLat)
                     //taken from https://www.geodatasource.com/developers/javascript under LGPLv license
                     if ((uLat == locLat) && (uLon == locLon)) {
                         
