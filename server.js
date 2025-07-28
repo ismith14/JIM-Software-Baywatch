@@ -54,7 +54,7 @@ app.get('/api/main', (req, res) => {
 //retrieves all data about a select location from database and returns data to frontend for display
 app.get('/api/locationData/:locationName', (req, res)=>{
     var locationName = req.params.locationName
-    var sql = "select * from locations join datalogs on datalogs.locationName = locations.locationName where locations.locationName = ? order by logDate desc limit 1" 
+    var sql = "SELECT * FROM locations JOIN datalogs ON datalogs.locationName = locations.locationName WHERE locations.locationName = ? ORDER BY logDate DESC LIMIT 1" 
     con.query(sql, [locationName], (err, result) => {
         if(err) throw err;
         else{
@@ -67,7 +67,7 @@ app.get('/api/locationData/:locationName', (req, res)=>{
 app.get('/api/locationData/:locationLat/:locationlon', (req, res) => {
     var lat = req.params.locationLat
     var lon = req.params.locationlon
-    var sql = "select * from locations join datalogs on datalogs.locationName = locations.locationName where locations.latitude = ? and locations.longitude = ? order by logDate desc limit 1;"
+    var sql = "SELECT * FROM locations JOIN datalogs ON datalogs.locationName = locations.locationName WHERE locations.latitude = ? AND locations.longitude = ? ORDER BY logDate DESC LIMIT 1;"
     con.query(sql, [lat, lon], (err, result) => {
         if(err) throw err;
         else{
@@ -79,14 +79,14 @@ app.get('/api/locationData/:locationLat/:locationlon', (req, res) => {
 
 //performs queries for the username and password to see if the correct username and password were inputted
 app.post('/api/login', (req, res) =>{
-    var sql = "select exists (select username from users where username = ? ) as usernameExists;"
+    var sql = "SELECT EXISTS (SELECT username FROM users WHERE username = ? ) AS usernameExists;"
     con.query(sql, [req.body.first], (err, result) =>{
         if(err) throw err;
         else if(result[0].usernameExists === 0){
             console.log('Invalid Username: ' + req.body.first)
             res.send([{ message: "Invalid Username"}])
         }else{
-            sql = "select exists (select password from users where password = ? )  as passwordExists;"
+            sql = "SELECT EXISTS (SELECT password FROM users WHERE password = ? )  AS passwordExists;"
             con.query(sql, [req.body.password], (err, result) =>{
                 if(err) throw err;
                 else if(result[0].passwordExists === 0){
@@ -103,7 +103,7 @@ app.post('/api/login', (req, res) =>{
 })
 //tries to insert new user data into database, if not unique then will give error to user
 app.post('/api/createUser', (req, res) =>{
-    var sql = "Insert into users values ( ? , ? );"
+    var sql = "INSERT INTO users VALUES ( ? , ? );"
         try{
         con.query(sql, [req.body.username, req.body.password], (err, result) =>{
             if(err){ 
