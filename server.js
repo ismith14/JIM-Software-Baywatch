@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 
 //retrieves all locations with the database and returns them to frontend for display in dropdown menu
 app.get('/api/main', (req, res) => {
-    var sql = 'select locationName from locations'
+    var sql = 'select * from locations'
     con.query(sql, (err, result) => {
         if(err) throw err;
         else{
@@ -59,6 +59,19 @@ app.get('/api/locationData/:locationName', (req, res)=>{
         if(err) throw err;
         else{
             console.log("Result: " + result)
+            res.json(result)
+        }
+    })
+})
+
+app.get('/api/locationData/:locationLat/:locationlon', (req, res) => {
+    var lat = req.params.locationLat
+    var lon = req.params.locationlon
+    var sql = "select * from locations join datalogs on datalogs.locationName = locations.locationName where locations.latitude = ? and locations.longitude = ? order by logDate desc limit 1;"
+    con.query(sql, [lat, lon], (err, result) => {
+        if(err) throw err;
+        else{
+            console.log(result)
             res.json(result)
         }
     })

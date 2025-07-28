@@ -7,16 +7,15 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="icon" type="image/png" href="baywatch.png">
 </head>
-<body>
+<body onload="getUser()">
    <h1>Baywatch</h1>
-
-   <button type="button" onclick="logout()">Logout</button>
+    <p id="username"></p>
+   <button id="loginButton" type="button" onclick="login()">Login</button>
+   <button id="logoutButton" type="button" onclick="logout()">Logout</button>
    <nav class="navbar">
         <ul>
             <li><a href="frontPage.html">Front Page</a></li>
             <li><a href="mainPage.html">Main Page</a></li>
-            <li><a href="login.html">Login</a></li>
-            <li><a href="createAccount.html">Create Account</a></li>
             <li><a href="sources.html">Sources</a></li>
             <li><a href="subscription.html">Subscription Page</a></li>
             <li><a href="additional_info.html">Additional Information</a></li>
@@ -36,25 +35,149 @@
 
         </ul>
 
-        <p>Functionality go here</p>
+        <br>
+        <button id="createMap" type="button" onclick="initMap()">Get Location</button>
+        <button id="geoButton" type="button" onclick="getGeolocation()">GPS Location</button>
+        <p id="lat"></p>
+        <p id="lon"></p>
     </main>
 
-    <gmp-map
+    
+
+    <div id="map" style="height: 450px; width: 100%; margin-top: 20px;">
+        <gmp-map
         center="37.8, -76.0"
         zoom="9"
         map-id="ChesapeakeBayMap"
         style="height: 650px"
-    ></gmp-map>
+        ></gmp-map>
+        <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDW6ceKFbiKTwBicjVJcTPeloYefjkc1KY&loading=async&libraries=maps,marker&v=beta"
+            defer>
+        </script>
+    </div>
 
-    <div id="map" style="height: 450px; width: 100%; margin-top: 20px;"></div>
-
-    <script src = "geolocation.js"></script>
-    <script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDW6ceKFbiKTwBicjVJcTPeloYefjkc1KY&loading=async&libraries=maps,marker&v=beta"
-        defer>
-    </script>
+    
     <script>
-        fetch('/main')
+        function getGeolocation(){
+            const successCallback = (position) => {
+                document.getElementById('lat').innerHTML = position.coords.latitude
+                var closest = -1;
+            var finalLat, finalLon
+            var uLat = position.coords.latitude
+            var uLon = position.coords.longitude
+            fetch('/api/main')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(element => {
+                    var dist
+                    var locLat = (element.latitude*1)
+                    var locLon = (element.longitude*1)
+                    console.log(locLat)
+                    //taken from https://www.geodatasource.com/developers/javascript under LGPLv license
+                    if ((uLat == locLat) && (uLon == locLon)) {
+                        
+                    }
+                    else {
+                        var radlat1 = Math.PI * uLat/180;
+                        var radlat2 = Math.PI * locLat/180;
+                        var theta = uLon-locLon;
+                        var radtheta = Math.PI * theta/180;
+                        dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                        if (dist > 1) {
+                            dist = 1;
+                        }
+                        dist = Math.acos(dist);
+                        dist = dist * 180/Math.PI;
+                        dist = dist * 60 * 1.1515;
+                    }
+                    if(closest == -1){
+                        closest = dist
+                    }else{
+                        if(dist < closest){
+                            closest = dist
+                            finalLat = locLat
+                            finalLon = locLon
+                        }
+                    }
+                })
+                fetch(`/api/locationData/${finalLat}/${finalLon}`)
+                .then(response => response.json())
+                .then(data => {
+                    var locationDataList = document.getElementById('locationData')
+
+                    locationDataList.innerHTML = ""
+
+                    var node = document.createElement('li')
+                    var text = document.createTextNode('Location Name: ' + data[0].locationName)
+
+                    node.appendChild(text)
+                    locationDataList.appendChild(node)
+
+                    node = document.createElement('li')
+                    text = document.createTextNode('Animal Life: ' + data[0].animalLife)
+
+                    node.appendChild(text)
+                    locationDataList.appendChild(node)
+
+                    node = document.createElement('li')
+                    text = document.createTextNode('Runoff: ' + data[0].runoff)
+
+                    node.appendChild(text)
+                    locationDataList.appendChild(node)
+
+                    node = document.createElement('li')
+                    text = document.createTextNode('DeadZones: ' + data[0].deadZones)
+
+                    node.appendChild(text)
+                    locationDataList.appendChild(node)
+
+                    node = document.createElement('li')
+                    text = document.createTextNode('Chemical Pollution: ' +data[0].chemicalPollution)
+
+                    node.appendChild(text)
+                    locationDataList.appendChild(node)
+
+                    node = document.createElement('li')
+                    text = document.createTextNode('Climate Change: '+data[0].climateChange)
+
+                    node.appendChild(text)
+                    locationDataList.appendChild(node)
+
+                    node = document.createElement('li')
+                    text = document.createTextNode('Invasive Species: ' + data[0].invasiveSpecies)
+
+                    node.appendChild(text)
+                    locationDataList.appendChild(node)
+
+                    node = document.createElement('li')
+                    text = document.createTextNode('Air Pollution: ' +data[0].airPollution)
+
+                    node.appendChild(text)
+                    locationDataList.appendChild(node)
+
+                    node = document.createElement('li')
+                    text = document.createTextNode('Wastewater: ' +data[0].wastewater)
+
+                    node.appendChild(text)
+                    locationDataList.appendChild(node)
+
+                    node = document.createElement('li')
+                    text = document.createTextNode('Water Tides: ' +data[0].watertides)
+
+                    node.appendChild(text)
+                    locationDataList.appendChild(node)
+                })
+            })
+            }
+            const errorCallback = (error) => {
+                document.getElementById('geoCoords').innerHTML = "Unable to get position"
+                console.log(error)
+            }
+
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        }
+        fetch('/api/main')
         .then(response => response.json())
         .then(data => {
             var locationSelect = document.getElementById('locationList')
@@ -65,18 +188,25 @@
                 locationSelect.appendChild(newOption)
             })
         })
+
         function getLocationData(){
             var selectedLocation = document.getElementById('locationList')
             var locationDataList = document.getElementById('locationData')
             var value = selectedLocation.value
-            fetch(`/locationData/${value}`)
+            fetch(`/api/locationData/${value}`)
             .then(response => response.json())
             .then(data => {
 
                 locationDataList.innerHTML = ""
 
                 var node = document.createElement('li')
-                var text = document.createTextNode('Animal Life: ' +data[0].animalLife)
+                var text = document.createTextNode('Location Name: ' + data[0].locationName)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+                node = document.createElement('li')
+                text = document.createTextNode('Animal Life: ' + data[0].animalLife)
 
                 node.appendChild(text)
                 locationDataList.appendChild(node)
@@ -123,11 +253,95 @@
                 node.appendChild(text)
                 locationDataList.appendChild(node)
 
+                node = document.createElement('li')
+                text = document.createTextNode('Water Tides: ' +data[0].watertides)
+
+                node.appendChild(text)
+                locationDataList.appendChild(node)
+
+            })
+        }
+        function getUser(){
+            fetch('/api/getUser')
+            .then(response => response.json())
+            .then(data => {
+                    if(data[0].message != ''){
+                        document.getElementById('username').innerHTML = data[0].message
+                        document.getElementById('loginButton').style.visibility = 'hidden'
+                        document.getElementById('userLoggedIn').innerText = "You are signed in"
+                        document.getElementById('directLogin').style.visibility = 'hidden'
+                    }else{
+                        document.getElementById('logoutButton').style.visibility = 'hidden'
+                        document.getElementById('loginButton').style.visibility = 'visible'
+                        document.getElementById('username').innerHTML = ''
+                        document.getElementById('userLoggedIn').innerHTML = ''
+                        document.getElementById('directLogin').style.visibility = 'visible'
+                    }
             })
         }
         function logout(){
-            window.location.href = '/'
+            fetch('/api/userLogout')
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = '/frontPage.html'
+            })
         }
+        //redirects user to login page
+        function login(){
+            window.location.href = '/login.html'
+        }
+        let map, infoWindow;
+
+        function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 6,
+        });
+        infoWindow = new google.maps.InfoWindow();
+
+        const locationButton = document.createElement("button");
+
+        locationButton.textContent = "Pan to Current Location";
+        locationButton.classList.add("custom-map-control-button");
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+        locationButton.addEventListener("click", () => {
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                infoWindow.setPosition(pos);
+                infoWindow.setContent("Location found.");
+                infoWindow.open(map);
+                map.setCenter(pos);
+                },
+                () => {
+                handleLocationError(true, infoWindow, map.getCenter());
+                },
+            );
+            } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+            }
+        });
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(
+            browserHasGeolocation
+            ? "Error: The Geolocation service failed."
+            : "Error: Your browser doesn't support geolocation.",
+        );
+        infoWindow.open(map);
+        }
+
+        window.initMap = initMap;
+
     </script>
 </body>
 </html>
