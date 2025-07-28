@@ -14,8 +14,6 @@
     <ul>
         <li><a href="frontPage.html">Front Page</a></li>
         <li><a href="mainPage.html">Main Page</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="createAccount.html">Create Account</a></li>
         <li><a href="sources.html">Sources</a></li>
         <li><a href="subscription.html">Subscription Page</a></li>
         <li><a href="additional_info.html">Additional Information</a></li>
@@ -64,6 +62,20 @@
         })
         function redirectToLogin(){
             window.location.href = '/login.html'
+        }
+        function getUser(){
+            fetch('/api/getUser')
+            .then(response => response.json())
+            .then(data => {
+                    if(data[0].message != ''){
+                        document.getElementById('username').innerHTML = data[0].message
+                        document.getElementById('loginButton').style.visibility = 'hidden'
+                    }else{
+                        document.getElementById('logoutButton').style.visibility = 'hidden'
+                        document.getElementById('loginButton').style.visibility = 'visible'
+                        document.getElementById('username').innerHTML = ''
+                    }
+            })
         }
 </script>
 </html>

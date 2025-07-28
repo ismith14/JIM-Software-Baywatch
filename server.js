@@ -96,12 +96,18 @@ app.post('/api/createUser', (req, res) =>{
 
 app.get('/api/getUser', (req, res) => {
     if(user == ''){
-        res.send({message: 'not logged in'})
+        res.send([{message: user}])
     }else{
-        res.send({message: user})
+        console.log(user)
+        res.send([{message: user}])
     }
 })
 
+app.get('/api/userLogout', (req,res) =>{
+    user = ''
+    console.log(user)
+    res.send([{message: user}])
+})
 
 app.listen(3000, () => {
     console.log('server listen on port 3000')

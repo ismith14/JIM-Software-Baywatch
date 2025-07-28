@@ -7,15 +7,15 @@
     <link rel="stylesheet" type="text/css" href="\style.css">
     <link rel="icon" type="image/x-icon" href="/baywatch.png">
 </head>
-<body>
+<body onload="getUser()">
    <h1>Baywatch</h1>
-
+   <p id="username"></p>
+   <button id="loginButton" type="button" onclick="login()">Login</button>
+   <button id="logoutButton" type="button" onclick="logout()">Logout</button>
    <nav class="navbar">
     <ul>
        <li><a href="frontPage.html">Front Page</a></li>
         <li><a href="mainPage.html">Main Page</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="createAccount.html">Create Account</a></li>
         <li><a href="sources.html">Sources</a></li>
         <li><a href="subscription.html">Subscription Page</a></li>
         <li><a href="additional_info.html">Additional Information</a></li>
@@ -31,8 +31,29 @@
    
 </body>
 <script>
+    function getUser(){
+            fetch('/api/getUser')
+            .then(response => response.json())
+            .then(data => {
+                    if(data[0].message != ''){
+                        document.getElementById('username').innerHTML = data[0].message
+                        document.getElementById('loginButton').style.visibility = 'hidden'
+                    }else{
+                        document.getElementById('logoutButton').style.visibility = 'hidden'
+                        document.getElementById('loginButton').style.visibility = 'visible'
+                        document.getElementById('username').innerHTML = ''
+                    }
+            })
+        }
     function logout(){
-            window.location.href = '/'
+            fetch('/api/userLogout')
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = '/login.html'
+            })
+        }
+        function login(){
+            window.location.href = '/login.html'
         }
 </script>
 </html>
